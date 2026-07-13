@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArcGIS Enterprise Integration — MCP GIS Hub</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav">
+    <a class="nav__brand" href="index.html"><span class="dot"></span> MCP GIS Hub</a>
+    <ul class="nav__links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="agol.html">ArcGIS Online</a></li>
+      <li><a href="enterprise.html">ArcGIS Enterprise</a></li>
+      <li><a href="comparison.html">Comparison</a></li>
+      <li><a href="examples.html">Examples &amp; Diagrams</a></li>
+      <li><a href="api-docs.html">API Docs</a></li>
+      <li><a href="https://github.com/sstasio/mcp-gis-hub" target="_blank" rel="noopener">GitHub ↗</a></li>
+    </ul>
+  </nav>
+</header>
+<main id="main">
+  <div class="container">
+    <span class="badge badge--enterprise">● On‑prem</span>
+    <h1>ArcGIS Enterprise Integration</h1>
+    <p class="lead">How the MCP server authenticates against and queries an on‑premises (or VPC‑hosted)
+    ArcGIS Enterprise portal + server.</p>
+
+    <section>
+      <h2>Integration flow</h2>
+      <figure class="diagram">
+        <img src="assets/img/diagram-04-enterprise-integration-flow.svg" alt="ArcGIS Enterprise integration flow diagram">
+        <figcaption>MCP server generates a portal token, searches the Enterprise portal, then queries the hosted/map service.</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>Auth: generateToken</h2>
+      <p class="section-lead">Enterprise portals typically use the classic token endpoint with a named service account, or SAML/PKI in federated environments.</p>
+      <pre><code>POST https://gis.yourcity.gov/portal/sharing/rest/generateToken
+Content-Type: application/x-www-form-urlencoded
+
+username=SERVICE_ACCOUNT
+&password=********
+&referer=https://gis.yourcity.gov
+&f=json</code></pre>
+    </section>
+
+    <section>
+      <h2>1. Find a layer (portal search)</h2>
+      <pre><code>GET https://gis.yourcity.gov/portal/sharing/rest/search
+  ?q=title:"Facility Assets"
+  &f=json
+  &token={portal_token}</code></pre>
+    </section>
+
+    <section>
+      <h2>2. Query features</h2>
+      <pre><code>GET https://gis.yourcity.gov/server/rest/services/Parks/FacilityAssets/MapServer/0/query
+  ?where=1=1
+  &outFields=*
+  &f=geojson
+  &token={portal_token}</code></pre>
+    </section>
+
+    <section>
+      <h2>Operational considerations</h2>
+      <div class="grid">
+        <div class="card"><h3>Network reachability</h3><p>The MCP server must reach the Enterprise portal + server, typically via VPN, private endpoint, or reverse proxy.</p></div>
+        <div class="card"><h3>Certificates</h3><p>Internal CAs are common — the Node/Python HTTP clients may need a custom CA bundle in production.</p></div>
+        <div class="card"><h3>Token lifetime</h3><p>Enterprise tokens are short‑lived by default; the server refreshes proactively before expiry.</p></div>
+      </div>
+    </section>
+
+    <section>
+      <h2>MCP tool mapping</h2>
+      <table>
+        <thead><tr><th>MCP tool</th><th>Enterprise REST endpoint</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><code>findLayer</code></td><td><code>/portal/sharing/rest/search</code></td><td>Same shape as AGOL, different base URL + auth.</td></tr>
+          <tr><td><code>queryFeatures</code></td><td><code>/server/rest/services/.../query</code></td><td>Works against both hosted and traditional map/feature services.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</main>
+<footer class="site-footer"><div class="footer-inner"><span>MCP GIS Hub</span><span>ArcGIS Enterprise reference</span></div></footer>
+<script src="assets/js/nav.js"></script>
+</body>
+</html>

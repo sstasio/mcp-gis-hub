@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ArcGIS Online Integration — MCP GIS Hub</title>
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav">
+    <a class="nav__brand" href="index.html"><span class="dot"></span> MCP GIS Hub</a>
+    <ul class="nav__links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="agol.html">ArcGIS Online</a></li>
+      <li><a href="enterprise.html">ArcGIS Enterprise</a></li>
+      <li><a href="comparison.html">Comparison</a></li>
+      <li><a href="examples.html">Examples &amp; Diagrams</a></li>
+      <li><a href="api-docs.html">API Docs</a></li>
+      <li><a href="https://github.com/sstasio/mcp-gis-hub" target="_blank" rel="noopener">GitHub ↗</a></li>
+    </ul>
+  </nav>
+</header>
+<main id="main">
+  <div class="container">
+    <span class="badge badge--cloud">● Cloud</span>
+    <h1>ArcGIS Online (AGOL) Integration</h1>
+    <p class="lead">How the MCP server authenticates against and queries a hosted ArcGIS Online organization
+    such as <code>sfgov.maps.arcgis.com</code>.</p>
+
+    <section>
+      <h2>Integration flow</h2>
+      <figure class="diagram">
+        <img src="assets/img/diagram-03-agol-integration-flow.svg" alt="ArcGIS Online integration flow diagram">
+        <figcaption>MCP server obtains an OAuth2 token, searches the portal, then queries the target feature service.</figcaption>
+      </figure>
+    </section>
+
+    <section>
+      <h2>Auth: OAuth 2.0 client credentials</h2>
+      <p class="section-lead">AGOL supports an app‑based OAuth2 flow that does not require a named user login — ideal for a server‑to‑server MCP tool.</p>
+      <pre><code>POST https://www.arcgis.com/sharing/rest/oauth2/token
+Content-Type: application/x-www-form-urlencoded
+
+client_id=YOUR_APP_ID
+&client_secret=YOUR_APP_SECRET
+&grant_type=client_credentials
+&f=json</code></pre>
+    </section>
+
+    <section>
+      <h2>1. Find a layer (portal search)</h2>
+      <pre><code>GET https://www.arcgis.com/sharing/rest/search
+  ?q=title:"Park Facilities" AND type:"Feature Service"
+  &f=json
+  &token={access_token}</code></pre>
+    </section>
+
+    <section>
+      <h2>2. Query features</h2>
+      <pre><code>GET https://services.arcgis.com/{orgId}/arcgis/rest/services/{serviceName}/FeatureServer/0/query
+  ?where=1=1
+  &outFields=*
+  &f=geojson
+  &token={access_token}</code></pre>
+    </section>
+
+    <section>
+      <h2>MCP tool mapping</h2>
+      <table>
+        <thead><tr><th>MCP tool</th><th>AGOL REST endpoint</th><th>Notes</th></tr></thead>
+        <tbody>
+          <tr><td><code>findLayer</code></td><td><code>/sharing/rest/search</code></td><td>Resolves a human‑readable name to an item id + service URL.</td></tr>
+          <tr><td><code>queryFeatures</code></td><td><code>/FeatureServer/{id}/query</code></td><td>Supports <code>where</code>, <code>outFields</code>, <code>geometry</code>, pagination.</td></tr>
+        </tbody>
+      </table>
+    </section>
+  </div>
+</main>
+<footer class="site-footer"><div class="footer-inner"><span>MCP GIS Hub</span><span>ArcGIS Online reference</span></div></footer>
+<script src="assets/js/nav.js"></script>
+</body>
+</html>

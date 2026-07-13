@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MCP GIS Hub — ArcGIS Online &amp; Enterprise MCP Server</title>
+<meta name="description" content="An MCP server exposing ArcGIS Online and ArcGIS Enterprise REST APIs as tools for Microsoft Copilot Studio and other MCP clients.">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+<a class="skip-link" href="#main">Skip to content</a>
+<header class="site-header">
+  <nav class="nav">
+    <a class="nav__brand" href="index.html"><span class="dot"></span> MCP GIS Hub</a>
+    <ul class="nav__links">
+      <li><a href="index.html">Overview</a></li>
+      <li><a href="agol.html">ArcGIS Online</a></li>
+      <li><a href="enterprise.html">ArcGIS Enterprise</a></li>
+      <li><a href="comparison.html">Comparison</a></li>
+      <li><a href="examples.html">Examples &amp; Diagrams</a></li>
+      <li><a href="api-docs.html">API Docs</a></li>
+      <li><a href="https://github.com/sstasio/mcp-gis-hub" target="_blank" rel="noopener">GitHub ↗</a></li>
+    </ul>
+  </nav>
+</header>
+
+<main id="main">
+  <section class="hero">
+    <div class="hero__inner">
+      <div class="hero__badges">
+        <span class="badge badge--cloud">● ArcGIS Online</span>
+        <span class="badge badge--enterprise">● ArcGIS Enterprise</span>
+        <span class="badge">Model Context Protocol</span>
+      </div>
+      <h1>An MCP server that speaks fluent ArcGIS.</h1>
+      <p class="lead">MCP GIS Hub exposes ArcGIS Online and ArcGIS Enterprise REST APIs as a small set of
+      Model Context Protocol tools — <code>findLayer</code> and <code>queryFeatures</code> — so Microsoft
+      Copilot Studio (or any MCP client) can search, discover, and query live feature layers in natural language.</p>
+      <div class="btn-row">
+        <a class="btn" href="examples.html">View architecture diagrams</a>
+        <a class="btn btn--ghost" href="../openapi/mcp.yaml">OpenAPI spec (mcp.yaml)</a>
+      </div>
+    </div>
+  </section>
+
+  <div class="container">
+
+    <section>
+      <h2>What this project delivers</h2>
+      <p class="section-lead">A complete, GitHub Pages‑ready reference implementation for wiring ArcGIS
+      environments into MCP‑compatible AI clients.</p>
+      <div class="grid">
+        <div class="card">
+          <span class="eyebrow">Documentation site</span>
+          <h3>Static, GitHub Pages‑ready</h3>
+          <p>This site — plain HTML/CSS, no build step, deployable straight from <code>/site</code>.</p>
+        </div>
+        <div class="card">
+          <span class="eyebrow">CI / CD</span>
+          <h3>GitHub Actions workflow</h3>
+          <p>Installs Node + Python dependencies, smoke‑tests both MCP servers, then deploys the site to GitHub Pages.</p>
+        </div>
+        <div class="card">
+          <span class="eyebrow">API docs</span>
+          <h3>Swagger / OpenAPI 3.0</h3>
+          <p><code>openapi/mcp.yaml</code> documents every MCP tool as a REST‑style operation for Swagger UI / Redoc.</p>
+        </div>
+        <div class="card">
+          <span class="eyebrow">Reference servers</span>
+          <h3>Node.js &amp; Python scaffolds</h3>
+          <p>Both make <strong>live</strong> calls to ArcGIS Online and ArcGIS Enterprise REST endpoints — token auth, portal search, feature queries.</p>
+        </div>
+        <div class="card">
+          <span class="eyebrow">Diagrams</span>
+          <h3>12 architecture diagrams</h3>
+          <p>Crisp, hand‑built SVGs covering architecture, auth, routing, sequencing, and deployment.</p>
+        </div>
+        <div class="card">
+          <span class="eyebrow">Dual environment</span>
+          <h3>AGOL + Enterprise routing</h3>
+          <p>One tool surface, environment resolved per request — cloud org and on‑prem portal side by side.</p>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>Repository layout</h2>
+      <pre><code>mcp-gis-hub/
+├── site/                     # GitHub Pages root
+│   ├── index.html, agol.html, enterprise.html, comparison.html, examples.html
+│   └── assets/{css,js,img}/
+├── mcp_servers/
+│   ├── node/server.js        # Live AGOL + Enterprise REST calls
+│   └── python/server.py      # Live AGOL + Enterprise REST calls
+├── openapi/
+│   └── mcp.yaml              # Swagger / OpenAPI 3.0 spec
+├── scripts/gen_diagrams.py   # Regenerates all SVG diagrams
+└── .github/workflows/deploy.yml
+</code></pre>
+    </section>
+
+    <section>
+      <h2>Where to go next</h2>
+      <div class="grid">
+        <div class="card"><h3><a href="agol.html">ArcGIS Online →</a></h3><p>OAuth2 flow, portal search, feature queries against a cloud org.</p></div>
+        <div class="card"><h3><a href="enterprise.html">ArcGIS Enterprise →</a></h3><p>Token auth, on‑prem portal + server REST endpoints, VPN considerations.</p></div>
+        <div class="card"><h3><a href="comparison.html">AGOL vs. Enterprise →</a></h3><p>Side‑by‑side comparison of auth, endpoints, and operational tradeoffs.</p></div>
+        <div class="card"><h3><a href="examples.html">Examples &amp; Diagrams →</a></h3><p>All 12 architecture diagrams plus sample tool call/response pairs.</p></div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<footer class="site-footer">
+  <div class="footer-inner">
+    <span>MCP GIS Hub — reference implementation for ArcGIS ⇄ Copilot Studio via MCP.</span>
+    <span>Built for the City &amp; County of San Francisco Parks &amp; Recreation GIS program.</span>
+  </div>
+</footer>
+<script src="assets/js/nav.js"></script>
+</body>
+</html>
