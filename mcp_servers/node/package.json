@@ -1,0 +1,16 @@
+{
+  "name": "mcp-gis-hub-node",
+  "version": "1.0.0",
+  "description": "Node.js MCP server exposing ArcGIS Online + ArcGIS Enterprise REST APIs as MCP tools.",
+  "main": "server.js",
+  "type": "commonjs",
+  "scripts": {
+    "start": "node server.js",
+    "test": "node test/smoke.test.js"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.0.4",
+    "node-fetch": "^2.7.0",
+    "dotenv": "^16.4.5"
+  }
+}
